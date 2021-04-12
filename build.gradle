@@ -1,6 +1,6 @@
 buildscript {
 	repositories {
-		// mavenLocal()
+		mavenLocal()
 		mavenCentral()
 		// jcenter()
 		// maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
@@ -8,10 +8,21 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'org.anarres.gradle:gradle-stdproject-plugin:1.0.10'
+	//	classpath 'org.anarres.gradle:gradle-stdproject-plugin:1.0.10'
 	}
 }
 
+plugins {
+
+	// Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
+	id 'java-gradle-plugin'
+
+	// Publish
+	id 'maven-publish'
+	id 'com.gradle.plugin-publish' version '0.13.0'
+}
+
+/*
 apply plugin: 'org.anarres.stdproject'
 stdproject {
 	javadocLinkSource = true;
@@ -27,13 +38,111 @@ stdmodule {
 apply plugin: 'org.anarres.stdplugin'
 stdplugin {
 	implementation "org.anarres.jnaerator", "org.anarres.gradle.plugin.jnaerator.JNAeratorPlugin"
+}*/
+
+group = "org.odfi.anarres"
+version = gradle.ext.has("version") ? gradle.ext.version : "dev"
+
+java {
+	toolchain {
+		languageVersion.set(JavaLanguageVersion.of(11))
+	}
 }
 
-group = "org.anarres.gradle"
-sourceCompatibility = '1.7'
-targetCompatibility = '1.7'
+gradlePlugin {
+	// Define the plugin
+	plugins {
+		jnaeratorPlugin {
+			id = 'org.odfi.anarres.jnaerator'
+			implementationClass = 'org.anarres.gradle.plugin.jnaerator.JNAeratorPlugin'
+			displayName = 'Anarres JNAERATOR Plugin'
+			description = 'A Gradle plugin for the JNAerator binding generator.'
+		}
+
+
+	}
+}
 
 dependencies {
 	compile 'com.google.code.findbugs:annotations:3.0.1'
 	compile "com.nativelibs4java:jnaerator:0.12"
+	// https://mvnrepository.com/artifact/commons-io/commons-io
+	compile group: 'commons-io', name: 'commons-io', version: '2.8.0'
+
+
+	// https://mvnrepository.com/artifact/junit/junit
+	testImplementation group: 'junit', name: 'junit', version: '4.13.2'
+
+}
+
+
+publishing {
+	publications {
+
+		pluginPublication(MavenPublication) {
+
+			groupId group
+			artifactId "jnaerator-gradle-plugin"
+			version version
+			from components.java
+
+			versionMapping {
+				usage('java-api') {
+					fromResolutionOf('runtimeClasspath')
+				}
+				usage('java-runtime') {
+					fromResolutionResult()
+				}
+			}
+			pom {
+				name = 'Anarres JNAERATOR Plugin'
+				description = 'A Gradle plugin for the JNAerator binding generator.'
+
+				//properties = [ ]
+				licenses {
+					license {
+						name = 'The Apache License, Version 2.0'
+						url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+					}
+				}
+
+
+			}
+		}
+
+	}
+	repositories {
+		maven {
+
+			// change URLs to point to your repos, e.g. http://my.org/repo
+			def releasesRepoUrl = "https://www.opendesignflow.org/maven/repository/internal/"
+			def snapshotsRepoUrl = "https://www.opendesignflow.org/maven/repository/snapshots"
+			url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+
+			credentials {
+				username System.getenv("PUBLISH_USERNAME")
+				password System.getenv("PUBLISH_PASSWORD")
+			}
+		}
+	}
+}
+
+
+repositories {
+
+	mavenLocal()
+	mavenCentral()
+	maven {
+		name = 'Sonatype Nexus Snapshots'
+		url = 'https://oss.sonatype.org/content/repositories/snapshots/'
+	}
+	maven {
+		name = 'ODFI Releases'
+		url = 'https://www.opendesignflow.org/maven/repository/internal/'
+	}
+	maven {
+		name = 'ODFI Snapshots'
+		url = 'https://www.opendesignflow.org/maven/repository/snapshots/'
+	}
+	google()
 }
