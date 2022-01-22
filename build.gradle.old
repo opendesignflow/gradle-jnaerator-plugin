@@ -11,7 +11,7 @@ plugins {
 
 
 group = "org.odfi.anarres"
-version = gradle.ext.has("version") ? gradle.ext.version : "dev"
+version = "1.0.1-SNAPSHOT"
 
 java {
 	toolchain {
@@ -37,7 +37,7 @@ dependencies {
 	compile 'com.google.code.findbugs:annotations:3.0.1'
 	compile "com.nativelibs4java:jnaerator:0.12"
 	// https://mvnrepository.com/artifact/commons-io/commons-io
-	compile group: 'commons-io', name: 'commons-io', version: '2.8.0'
+	compile group: 'commons-io', name: 'commons-io', version: '2.11.0'
 
 
 	// https://mvnrepository.com/artifact/junit/junit
@@ -85,8 +85,8 @@ publishing {
 		maven {
 
 			// change URLs to point to your repos, e.g. http://my.org/repo
-			def releasesRepoUrl = "https://www.opendesignflow.org/maven/repository/internal/"
-			def snapshotsRepoUrl = "https://www.opendesignflow.org/maven/repository/snapshots"
+			def releasesRepoUrl = "https://repo.opendesignflow.org/maven/repository/internal/"
+			def snapshotsRepoUrl = "https://repo.opendesignflow.org/maven/repository/snapshots"
 			url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
 
 			credentials {
@@ -108,11 +108,11 @@ repositories {
 	}
 	maven {
 		name = 'ODFI Releases'
-		url = 'https://www.opendesignflow.org/maven/repository/internal/'
+		url = 'https://repo.opendesignflow.org/maven/repository/internal/'
 	}
 	maven {
 		name = 'ODFI Snapshots'
-		url = 'https://www.opendesignflow.org/maven/repository/snapshots/'
+		url = 'https://repo.opendesignflow.org/maven/repository/snapshots/'
 	}
 	google()
 }

@@ -12,9 +12,3 @@ plugindev {
 	projectInceptionYear '2014'
 	done()
 }
-
-bintray {
-	user = rootProject.hasProperty('bintrayUsername')?rootProject.bintrayUsername:''
-	key = rootProject.hasProperty('bintrayApiKey')?rootProject.bintrayApiKey:''
-	pkg.repo = 'gradle-plugins'
-}
