@@ -1,7 +1,7 @@
 plugins {
     // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
     id("java-gradle-plugin")
-
+    id ("java")
 
     // Publish
     id("maven-publish")
@@ -42,6 +42,12 @@ tasks.javadoc {
         (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
     }
 }
+/*
+testing {
+
+    useJUnitPlatform()
+}*/
+
 
 dependencies {
 
@@ -50,6 +56,9 @@ dependencies {
     // https://mvnrepository.com/artifact/commons-io/commons-io
     implementation("commons-io:commons-io:2.11.0")
 
+    // https://mvnrepository.com/artifact/junit/junit
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 
 }
 

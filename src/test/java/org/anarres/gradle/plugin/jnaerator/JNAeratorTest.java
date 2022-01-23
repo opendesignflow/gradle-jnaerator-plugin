@@ -3,9 +3,10 @@ package org.anarres.gradle.plugin.jnaerator;
 import com.ochafik.lang.jnaerator.JNAerator;
 import com.ochafik.lang.jnaerator.JNAeratorCommandLineArgs;
 import com.ochafik.lang.jnaerator.JNAeratorConfig;
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
 
 /**
  *

@@ -5,9 +5,10 @@ import org.gradle.api.DefaultTask;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.testfixtures.ProjectBuilder;
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  *
@@ -17,7 +18,7 @@ public class JNAeratorPluginApplyTest {
 
     Project project;
 
-    @Before
+    @BeforeAll
     public void setUp() {
         project = ProjectBuilder.builder().build();
     }
@@ -27,10 +28,10 @@ public class JNAeratorPluginApplyTest {
         project.apply(Collections.singletonMap("plugin", "java"));
         // project.apply(Collections.singletonMap("plugin", "org.anarres.jnaerator"));
         project.getPlugins().apply(JNAeratorPlugin.class);
-        assertTrue("Project is missing plugin", project.getPlugins().hasPlugin(JNAeratorPlugin.class));
+        assertTrue(project.getPlugins().hasPlugin(JNAeratorPlugin.class),"Project is missing plugin");
         Task task = project.getTasks().findByName("jnaerator");
-        assertNotNull("Project is missing jnaerator task", task);
-        assertTrue("JNAerator task is the wrong type", task instanceof DefaultTask);
-        assertTrue("JNAerator task should be enabled", ((DefaultTask) task).isEnabled());
+        assertNotNull( task,"Project is missing jnaerator task");
+        assertTrue(task instanceof DefaultTask,"JNAerator task is the wrong type");
+        assertTrue( ((DefaultTask) task).isEnabled(),"JNAerator task should be enabled");
     }
 }
