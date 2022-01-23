@@ -10,7 +10,7 @@ plugins {
 
 
 // Project version
-var lib_version by extra("1.0.1-SNAPSHOT")
+var lib_version by extra("1.0.2-SNAPSHOT")
 var branch by extra { System.getenv("BRANCH_NAME") }
 if (System.getenv().getOrDefault("BRANCH_NAME", "dev").contains("release")) {
     lib_version = lib_version.replace("-SNAPSHOT", "")
